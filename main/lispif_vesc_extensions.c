@@ -5248,7 +5248,11 @@ static lbm_value ext_uart_read(lbm_value *args, lbm_uint argn) {
 	} else {
 		a.unblock = true;
 		lbm_block_ctx_from_extension();
-		xTaskCreatePinnedToCore(uart_rx_task, "Uart Rx", 2048, &a, 7, NULL, tskNO_AFFINITY);
+		if (xTaskCreatePinnedToCore(uart_rx_task, "Uart Rx", 2048,
+		 &a, 7, NULL, tskNO_AFFINITY) != pdPASS) {
+			lbm_undo_block_ctx_from_extension();
+			return lbm_enc_u(0);
+		}
 		return ENC_SYM_TRUE;
 	}
 }
