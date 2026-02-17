@@ -5910,7 +5910,7 @@ static void process_events(void) {
     return;
   }
 
-  lbm_event_t e;
+  lbm_event_t e = {0};
   while (lbm_event_pop(&e)) {
     lbm_value event_val = get_event_value(&e);
     switch(e.type) {

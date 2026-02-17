@@ -1,6 +1,6 @@
 # VESC Express
 
-The is the codebase for the VESC Express, which is a WiFi and Bluetooth-enabled logger and IO-board. At the moment it is tested and runs on the ESP32C3 and ESP32S3 but other ESP32 devices can be added.
+The is the codebase for the VESC Express, which is a WiFi and Bluetooth-enabled logger and IO-board. At the moment it is tested and runs on the ESP32C3, ESP32C6 and ESP32S3 but other ESP32 devices can be added.
 
 ## Toolchain
 
@@ -17,7 +17,7 @@ The instructions linked above will install the master branch of ESP-IDF. To inst
 ```bash
 git clone -b v5.2.2 --recursive https://github.com/espressif/esp-idf.git esp-idf-v5.2.2
 cd esp-idf-v5.2.2/
-./install.sh esp32c3 esp32s3
+./install.sh esp32c3 esp32s3 esp32c6
 ```
 
 At the moment development is done using the stable 5.2.2-release.
@@ -50,6 +50,5 @@ idf.py build -DHW_NAME="VESC Express T"
 For option 1. you could for instance add you're two files `hw_my_device.c` and `hw_my_device.h` into "**main/hw_conf**", and then edit the `HW_SOURCE` and `HW_HEADER` macro definitions in "**main/conf_general.h**" to the names of your new files. This method is ideal if you may want to contribute back these hardware configurations to the vesc_express repository!
 
 Option 2. is instead better if you have hardware configuration files in a directory which is outside the vesc_express source tree. You would then, for instance, set the environment variables `HW_SRC=/my/path/to/hw_my_device.c` and `HW_HEADER=/my/path/to/hw_my_device.h` when running `idf.py build`.
-
 
 **Note:** If you ever change the environment variables, or if when you first start using them, you need to first run `idf.py reconfigure` before building (with the environment variables still set of course!), as the build system unfortunately can't automatically detect this change. Running `idf.py fullclean` has the same effect as this forces cmake to rebuild the build configurations.

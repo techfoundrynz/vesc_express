@@ -729,7 +729,7 @@ void comm_wifi_set_event_listener(comm_wifi_event_cb_t handler) {
 struct sockaddr_in create_sockaddr_in(ip_addr_t addr, uint16_t port) {
 	struct sockaddr_in result = {0};
 	// *Pretty* sure this works
-	memcpy(&result.sin_addr, &addr, sizeof(ip_addr_t));
+	result.sin_addr.s_addr = ip_2_ip4(&addr)->addr;
 	result.sin_family = AF_INET;
 	result.sin_port   = htons(port);
 	// TODO: Is this necessary and correct if so?

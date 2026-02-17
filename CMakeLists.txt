@@ -7,9 +7,19 @@ file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
 file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/build/project_description.json" 
 "{\"project_name\": \"vesc_express\", \"version\": \"1.0\"}")
 
-# Default build target if not provided
+# Default build target Logic
 if(NOT DEFINED HW_NAME)
-    set(HW_NAME "VESC Express T")
+    if(DEFINED IDF_TARGET)
+        if(IDF_TARGET STREQUAL "esp32s3")
+            set(HW_NAME "DevKit S3")
+        elseif(IDF_TARGET STREQUAL "esp32c6")
+            set(HW_NAME "Devkit C6")
+        else()
+            set(HW_NAME "VESC Express T")
+        endif()
+    else()
+        set(HW_NAME "VESC Express T")
+    endif()
 endif()
 
 # Check for buildall target
@@ -164,7 +174,11 @@ if(DEFINED HW_NAME AND DEFINED HW_TARGET AND DEFINED HW_FILE_NAME)
     string(REGEX REPLACE ".h" "" HW_FILE ${HW_FILE})
 
     # IMPORTANT: Set IDF_TARGET before including project.cmake
-    SET(IDF_TARGET ${HW_TARGET})
+    if(NOT DEFINED IDF_TARGET)
+        SET(IDF_TARGET ${HW_TARGET})
+    elseif(NOT IDF_TARGET STREQUAL HW_TARGET)
+        message(WARNING "IDF_TARGET (${IDF_TARGET}) does not match HW_TARGET (${HW_TARGET}) from ${HW_NAME}. This may cause build issues.")
+    endif()
     
     # Pass through hw file paths
     add_compile_definitions(HW_HEADER="${HW_FILE}.h" HW_SOURCE="${HW_FILE}.c")
@@ -172,19 +186,7 @@ else ()
     message(FATAL_ERROR "Build target info missing.\nHW_NAME: ${HW_NAME}\nHW_TARGET: ${HW_TARGET}\nHW_FILE: ${HW_FILE_NAME}") 
 endif()
 
-# Check if we need to handle sdkconfig
-set(SDKCONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/sdkconfig.${HW_TARGET}")
-if(EXISTS ${SDKCONFIG_PATH})
-    # Set environment variables for ESP-IDF
-    set(ENV{SDKCONFIG} "${CMAKE_CURRENT_SOURCE_DIR}/sdkconfig")
-    
-    # Copy the appropriate sdkconfig to the root directory
-    if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/sdkconfig" OR NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} -E copy ${SDKCONFIG_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/sdkconfig
-        )
-    endif()
-endif()
+
 
 message("Processing target ${HW_NAME} on ${HW_TARGET} for file ${HW_FILE_NAME}")
 message("Building in directory: ${TARGET_BUILD_DIR}")
