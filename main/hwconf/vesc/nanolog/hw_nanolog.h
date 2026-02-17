@@ -21,6 +21,7 @@
 #define MAIN_HWCONF_VESC_NANOLOG_H_
 
 #define HW_NAME						"Nanolog"
+#define HW_TARGET                   "esp32c3"
 
 #ifndef CONF_BLE_NAME
 #define CONF_BLE_NAME "Nanolog"
