@@ -24,19 +24,28 @@ At the moment development is done using the stable 5.2.2-release.
 
 ## Building
 
+Set the target chip/architecture with 
+```bash
+idf.py set-target <target> 
+```
+
+where target is esp32c3 or esp32s3. You will need to run a fullclean or remove the build directory when changing targets.
+
 Once the toolchain is set up in the current path, the project can be built with
 
 ```bash
 idf.py build
 ```
 
+That will create vesc_express.bin in the build directory, which can be used with the bootloader in VESC Tool. If the ESP32c3 does not come with firmware preinstalled, the USB-port can be used for flashing firmware using the built-in bootloader. That also requires bootloader.bin and partition-table.bin which also can be found in the build directory. This can be done from VESC Tool or using idf.py.
+
 All targets can be built with
 
 ```bash
-idf.py build -DBUILDALL=1
+python build_all.py
 ```
 
-That will create vesc_express.bin in the build directory under the hardware target name, which can be used with the bootloader in VESC Tool. If the ESP32c3 does not come with firmware preinstalled, the USB-port can be used for flashing firmware using the built-in bootloader. That also requires bootloader.bin and partition-table.bin which also can be found in the build directory. This can be done from VESC Tool or using idf.py.
+That will create all required firmware files under the build_out directory, with hardware names as child directories. All target switching is handled automatically with the build_all command.
 
 ### Custom Hardware Targets
 
