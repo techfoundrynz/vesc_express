@@ -7,6 +7,10 @@
 
 #define HW_INIT_HOOK()          hw_init()
 
+// CAN
+#define CAN_TX_GPIO_NUM				16
+#define CAN_RX_GPIO_NUM				17
+
 // UART
 #define UART_NUM                0
 #define UART_BAUDRATE           115200

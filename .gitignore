@@ -12,3 +12,4 @@ sdkconfig
 # feel like making that decision right now...
 managed_components/
 dependencies.lock
+build_output/

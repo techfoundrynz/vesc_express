@@ -89,22 +89,44 @@ def build_target(config, output_dir):
         
         # 3. Copy artifacts
         try:
-            # Source paths (ESP-IDF default output name is project name)
-            # Assuming project name is "vesc_express" from CMakeLists.txt
+            # Create target-specific output directory
+            target_output_dir = os.path.join(output_dir, safe_name)
+            os.makedirs(target_output_dir, exist_ok=True)
+            
+            # Source paths
             src_bin = os.path.join(build_dir, "vesc_express.bin")
             src_elf = os.path.join(build_dir, "vesc_express.elf")
-            
-            # Destination paths
-            dest_bin = os.path.join(output_dir, f"vesc_express_{safe_name}.bin")
-            dest_elf = os.path.join(output_dir, f"vesc_express_{safe_name}.elf")
-            
+            src_boot = os.path.join(build_dir, "bootloader", "bootloader.bin")
+            src_pt = os.path.join(build_dir, "partition_table", "partition_table.bin")
+            src_ota = os.path.join(build_dir, "ota_data_initial.bin")
+
+            # Copy Bin
             if os.path.exists(src_bin):
-                shutil.copy2(src_bin, dest_bin)
-                print_status(f"--> Copied bin to {dest_bin}")
+                shutil.copy2(src_bin, os.path.join(target_output_dir, "vesc_express.bin"))
+                print_status(f"--> Copied bin to {target_output_dir}")
                 
+            # Copy ELF
             if os.path.exists(src_elf):
-                shutil.copy2(src_elf, dest_elf)
-                print_status(f"--> Copied elf to {dest_elf}")
+                shutil.copy2(src_elf, os.path.join(target_output_dir, "vesc_express.elf"))
+                print_status(f"--> Copied elf to {target_output_dir}")
+
+            # Copy Bootloader
+            if os.path.exists(src_boot):
+                shutil.copy2(src_boot, os.path.join(target_output_dir, "bootloader.bin"))
+                print_status(f"--> Copied bootloader to {target_output_dir}")
+            
+            # Copy Partition Table
+            if os.path.exists(src_pt):
+                shutil.copy2(src_pt, os.path.join(target_output_dir, "partition_table.bin"))
+                print_status(f"--> Copied partition table to {target_output_dir}")
+            
+            # Copy OTA Data Initial
+            if os.path.exists(src_ota):
+                shutil.copy2(src_ota, os.path.join(target_output_dir, "ota_data_initial.bin"))
+                print_status(f"--> Copied ota_data_initial to {target_output_dir}")
+                
+        except Exception as e:
+            print_status(f"Warning: Failed to copy artifacts: {e}", Colors.WARNING)
                 
         except Exception as e:
             print_status(f"Warning: Failed to copy artifacts: {e}", Colors.WARNING)
