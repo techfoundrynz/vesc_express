@@ -201,7 +201,7 @@ def build_target(config, output_dir, prev_target=None, idx=0, total=0):
 
             if not os.path.exists(src_pt):
                 raise FileNotFoundError(f"Missing artifact: {src_pt}")
-            shutil.copy2(src_pt, os.path.join(target_output_dir, "partition_table.bin"))
+            shutil.copy2(src_pt, os.path.join(target_output_dir, "partition-table.bin"))
             print_status(f"--> Copied partition table to {target_output_dir}")
 
         except Exception as e:
