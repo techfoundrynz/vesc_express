@@ -59,16 +59,13 @@ def get_hw_configs():
     return configs
 
 def build_target(config, output_dir):
-    build_dir = os.path.join("build", config['name'])
+    build_dir = "build"
     
     print_status(f"\n========================================")
     print_status(f"Building: {config['name']} ({config['target']})")
     print_status(f"Config: {config['file']}")
     print_status(f"Dir: {build_dir}")
     print_status(f"========================================")
-    
-    # Ensure build dir exists
-    os.makedirs(build_dir, exist_ok=True)
     
     # 1. Set Target
     cmd_base = ["idf.py", "-B", build_dir, f"-DHW_NAME={config['name']}"]
@@ -93,20 +90,14 @@ def build_target(config, output_dir):
             
             # Source paths
             src_bin = os.path.join(build_dir, "vesc_express.bin")
-            src_elf = os.path.join(build_dir, "vesc_express.elf")
             src_boot = os.path.join(build_dir, "bootloader", "bootloader.bin")
-            src_pt = os.path.join(build_dir, "partition_table", "partition_table.bin")
+            src_pt = os.path.join(build_dir, "partition_table", "partition-table.bin")
 
             # Copy Bin
             if os.path.exists(src_bin):
                 shutil.copy2(src_bin, os.path.join(target_output_dir, "vesc_express.bin"))
                 print_status(f"--> Copied bin to {target_output_dir}")
                 
-            # Copy ELF
-            if os.path.exists(src_elf):
-                shutil.copy2(src_elf, os.path.join(target_output_dir, "vesc_express.elf"))
-                print_status(f"--> Copied elf to {target_output_dir}")
-
             # Copy Bootloader
             if os.path.exists(src_boot):
                 shutil.copy2(src_boot, os.path.join(target_output_dir, "bootloader.bin"))
