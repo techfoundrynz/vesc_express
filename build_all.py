@@ -96,7 +96,6 @@ def build_target(config, output_dir):
             src_elf = os.path.join(build_dir, "vesc_express.elf")
             src_boot = os.path.join(build_dir, "bootloader", "bootloader.bin")
             src_pt = os.path.join(build_dir, "partition_table", "partition_table.bin")
-            src_ota = os.path.join(build_dir, "ota_data_initial.bin")
 
             # Copy Bin
             if os.path.exists(src_bin):
@@ -118,14 +117,6 @@ def build_target(config, output_dir):
                 shutil.copy2(src_pt, os.path.join(target_output_dir, "partition_table.bin"))
                 print_status(f"--> Copied partition table to {target_output_dir}")
             
-            # Copy OTA Data Initial
-            if os.path.exists(src_ota):
-                shutil.copy2(src_ota, os.path.join(target_output_dir, "ota_data_initial.bin"))
-                print_status(f"--> Copied ota_data_initial to {target_output_dir}")
-                
-        except Exception as e:
-            print_status(f"Warning: Failed to copy artifacts: {e}", Colors.WARNING)
-                
         except Exception as e:
             print_status(f"Warning: Failed to copy artifacts: {e}", Colors.WARNING)
             
