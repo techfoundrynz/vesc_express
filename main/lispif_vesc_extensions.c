@@ -80,6 +80,7 @@
 #include "nvs_flash.h"
 #include "esp_sleep.h"
 #include "soc/rtc.h"
+#include "esp_private/esp_clk.h"
 #include "esp_bt.h"
 #include "esp_bt_main.h"
 #include "esp_partition.h"
@@ -154,6 +155,7 @@ typedef struct {
 	lbm_uint part_running;
 	lbm_uint git_branch;
 	lbm_uint git_hash;
+	lbm_uint cpu_freq;
 
 	// FW Info
 	lbm_uint version;
@@ -292,6 +294,8 @@ static bool compare_symbol(lbm_uint sym, lbm_uint *comp) {
 			lbm_add_symbol_const("git-branch", comp);
 		} else if (comp == &syms_vesc.git_hash) {
 			lbm_add_symbol_const("git-hash", comp);
+		} else if (comp == &syms_vesc.cpu_freq) {
+			lbm_add_symbol_const("cpu-freq", comp);
 		}
 
 		else if (comp == &syms_vesc.version) {
@@ -1179,6 +1183,8 @@ static lbm_value ext_sysinfo(lbm_value *args, lbm_uint argn) {
 		} else {
 			res = ENC_SYM_MERROR;
 		}
+	} else if (compare_symbol(name, &syms_vesc.cpu_freq)) {
+		res = lbm_enc_i(esp_clk_cpu_freq() / 1000000);
 	}
 
 	return res;
