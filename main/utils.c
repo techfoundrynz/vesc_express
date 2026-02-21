@@ -19,6 +19,7 @@
     */
 
 #include "utils.h"
+#include "soc/gpio_pins.h"
 #include "esp_vfs_fat.h"
 #include "sdmmc_cmd.h"
 #include "esp_vfs.h"
@@ -188,25 +189,8 @@ const char *utils_bool_to_str(bool value) {
 }
 
 bool utils_gpio_is_valid(int pin) {
-	switch (pin) {
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 10:
-	case 18:
-	case 19:
-	case 20:
-	case 21:
-		return true;
-
-	default:
+	if (pin < 0 || pin >= SOC_GPIO_PIN_COUNT) {
 		return false;
 	}
+	return (SOC_GPIO_VALID_GPIO_MASK >> pin) & 1;
 }

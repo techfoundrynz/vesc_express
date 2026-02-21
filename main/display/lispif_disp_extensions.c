@@ -40,30 +40,6 @@
 
 // Display Drivers
 
-static bool gpio_is_valid(int pin) {
-	switch (pin) {
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 10:
-	case 18:
-	case 19:
-	case 20:
-	case 21:
-		return true;
-
-	default:
-		return false;
-	}
-}
-
 
 static char *msg_invalid_gpio = "Invalid GPIO";
 static char *msg_invalid_clk_speed = "Invalid clock speed";
@@ -78,10 +54,10 @@ static lbm_value ext_disp_load_sh8501b(lbm_value *args, lbm_uint argn) {
 	gpio_cs = lbm_dec_as_i32(args[2]);
 	gpio_reset = lbm_dec_as_i32(args[3]);
 
-	if (!gpio_is_valid(gpio_sd0) ||
-			!gpio_is_valid(gpio_clk) ||
-			!gpio_is_valid(gpio_cs) ||
-			!gpio_is_valid(gpio_reset)) {
+	if (!utils_gpio_is_valid(gpio_sd0) ||
+			!utils_gpio_is_valid(gpio_clk) ||
+			!utils_gpio_is_valid(gpio_cs) ||
+			!utils_gpio_is_valid(gpio_reset)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
@@ -113,11 +89,11 @@ static lbm_value ext_disp_load_ili9341(lbm_value *args, lbm_uint argn) {
 	gpio_reset = lbm_dec_as_i32(args[3]);
 	gpio_dc = lbm_dec_as_i32(args[4]);
 
-	if (!gpio_is_valid(gpio_sd0) ||
-			!gpio_is_valid(gpio_clk) ||
-			!gpio_is_valid(gpio_cs) ||
-			!gpio_is_valid(gpio_reset) ||
-			!gpio_is_valid(gpio_dc)) {
+	if (!utils_gpio_is_valid(gpio_sd0) ||
+			!utils_gpio_is_valid(gpio_clk) ||
+			!utils_gpio_is_valid(gpio_cs) ||
+			!utils_gpio_is_valid(gpio_reset) ||
+			!utils_gpio_is_valid(gpio_dc)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
@@ -145,8 +121,8 @@ static lbm_value ext_disp_load_ssd1306(lbm_value *args, lbm_uint argn) {
 	int gpio_scl = lbm_dec_as_i32(args[1]);
 	uint32_t clk_speed = lbm_dec_as_u32(args[2]);
 
-	if (!gpio_is_valid(gpio_sda) ||
-			!gpio_is_valid(gpio_scl)) {
+	if (!utils_gpio_is_valid(gpio_sda) ||
+			!utils_gpio_is_valid(gpio_scl)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
@@ -174,11 +150,11 @@ static lbm_value ext_disp_load_st7789(lbm_value *args, lbm_uint argn) {
 	int gpio_reset = lbm_dec_as_i32(args[3]);
 	int gpio_dc = lbm_dec_as_i32(args[4]);
 
-	if (!gpio_is_valid(gpio_sd0) ||
-			!gpio_is_valid(gpio_clk) ||
-			!gpio_is_valid(gpio_cs) ||
-			(!gpio_is_valid(gpio_reset) && gpio_reset >= 0) ||
-			!gpio_is_valid(gpio_dc)) {
+	if (!utils_gpio_is_valid(gpio_sd0) ||
+			!utils_gpio_is_valid(gpio_clk) ||
+			!utils_gpio_is_valid(gpio_cs) ||
+			(!utils_gpio_is_valid(gpio_reset) && gpio_reset >= 0) ||
+			!utils_gpio_is_valid(gpio_dc)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
@@ -210,11 +186,11 @@ static lbm_value ext_disp_load_ili9488(lbm_value *args, lbm_uint argn) {
 	gpio_reset = lbm_dec_as_i32(args[3]);
 	gpio_dc = lbm_dec_as_i32(args[4]);
 
-	if (!gpio_is_valid(gpio_sd0) ||
-			!gpio_is_valid(gpio_clk) ||
-			!gpio_is_valid(gpio_cs) ||
-			!gpio_is_valid(gpio_reset) ||
-			!gpio_is_valid(gpio_dc)) {
+	if (!utils_gpio_is_valid(gpio_sd0) ||
+			!utils_gpio_is_valid(gpio_clk) ||
+			!utils_gpio_is_valid(gpio_cs) ||
+			!utils_gpio_is_valid(gpio_reset) ||
+			!utils_gpio_is_valid(gpio_dc)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
@@ -244,11 +220,11 @@ static lbm_value ext_disp_load_st7735(lbm_value *args, lbm_uint argn) {
 	int gpio_reset = lbm_dec_as_i32(args[3]);
 	int gpio_dc = lbm_dec_as_i32(args[4]);
 
-	if (!gpio_is_valid(gpio_sd0) ||
-			!gpio_is_valid(gpio_clk) ||
-			!gpio_is_valid(gpio_cs) ||
-			!gpio_is_valid(gpio_reset) ||
-			!gpio_is_valid(gpio_dc)) {
+	if (!utils_gpio_is_valid(gpio_sd0) ||
+			!utils_gpio_is_valid(gpio_clk) ||
+			!utils_gpio_is_valid(gpio_cs) ||
+			!utils_gpio_is_valid(gpio_reset) ||
+			!utils_gpio_is_valid(gpio_dc)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
@@ -278,11 +254,11 @@ static lbm_value ext_disp_load_ssd1351(lbm_value *args, lbm_uint argn) {
 	int gpio_reset = lbm_dec_as_i32(args[3]);
 	int gpio_dc = lbm_dec_as_i32(args[4]);
 
-	if (!gpio_is_valid(gpio_sd0) ||
-			!gpio_is_valid(gpio_clk) ||
-			!gpio_is_valid(gpio_cs) ||
-			!gpio_is_valid(gpio_reset) ||
-			!gpio_is_valid(gpio_dc)) {
+	if (!utils_gpio_is_valid(gpio_sd0) ||
+			!utils_gpio_is_valid(gpio_clk) ||
+			!utils_gpio_is_valid(gpio_cs) ||
+			!utils_gpio_is_valid(gpio_reset) ||
+			!utils_gpio_is_valid(gpio_dc)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
@@ -313,10 +289,10 @@ static lbm_value ext_disp_load_icna3306(lbm_value *args, lbm_uint argn) {
 	gpio_cs = lbm_dec_as_i32(args[2]);
 	gpio_reset = lbm_dec_as_i32(args[3]);
 
-	if (!gpio_is_valid(gpio_sd0) ||
-			!gpio_is_valid(gpio_clk) ||
-			!gpio_is_valid(gpio_cs) ||
-			!gpio_is_valid(gpio_reset)) {
+	if (!utils_gpio_is_valid(gpio_sd0) ||
+			!utils_gpio_is_valid(gpio_clk) ||
+			!utils_gpio_is_valid(gpio_cs) ||
+			!utils_gpio_is_valid(gpio_reset)) {
 		lbm_set_error_reason(msg_invalid_gpio);
 		return ENC_SYM_EERROR;
 	}
